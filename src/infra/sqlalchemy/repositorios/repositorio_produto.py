@@ -27,8 +27,8 @@ class RepositorioProdut():
 
     def editar(self, id: int, produto: schemas.Produto):
         stmt = (
-                update(models.produto).
-                where(models.produto.id == id).
+                update(models.Produto).
+                where(models.Produto.id == id).
                 values( nome=produto.nome,
                     #   detalhes=produto.detalhes,
                         preco=produto.preco,
