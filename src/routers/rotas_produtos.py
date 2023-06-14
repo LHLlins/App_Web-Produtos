@@ -22,6 +22,12 @@ def listar_produtos(db: Session = Depends(get_db)):
     return produto_criado
 
 
+@router.get('/produtos/{id}')
+def exibir_produtos(id:int, session:Session = Depends(get_db)):
+    prpoduto_localizado = RepositorioProdut(session).busca_id(id)
+    return prpoduto_localizado
+
+
 @router.put('/produtos/{id}', response_model = ProdutoSimples)
 def editar_produtos(id:int, produto: Produto, db: Session = Depends(get_db)):
     produto_editado = RepositorioProdut(db).editar(id, produto)
