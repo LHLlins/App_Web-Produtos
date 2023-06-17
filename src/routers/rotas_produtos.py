@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends 
+from fastapi import APIRouter, status, Depends, HTTPException 
 from typing import List
 from sqlalchemy.orm import Session
 from src.schemas.schemas import Produto, ProdutoSimples
@@ -20,6 +20,14 @@ def criar_produtos(produto: Produto, db: Session = Depends(get_db)):
 def listar_produtos(db: Session = Depends(get_db)):
     produto_criado = RepositorioProdut(db).listar( )
     return produto_criado
+
+
+@router.get('/produtos/{id}')
+def exibir_produtos(id:int, db:Session = Depends(get_db)):
+    produto_localizado = RepositorioProdut(db).busca_id(id)
+    if not produto_localizado:
+        raise HTTPException(status_code=404, detail = f'Não há  produto {id}  na loja')
+    return produto_localizado
 
 
 @router.put('/produtos/{id}', response_model = ProdutoSimples)

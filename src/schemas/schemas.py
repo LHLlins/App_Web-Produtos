@@ -21,7 +21,7 @@ class Usuario(BaseModel):
     # meus_produtos: List[Produtos]
     # meus_pedidos: List[Pedido]
     produtos:List[ProdutoSimples] = []
-    
+ 
     
     class Config:
         orm_mode = True
@@ -61,14 +61,17 @@ class Produto(BaseModel):
 
 
 class Pedido(BaseModel):
-      id: Optional[str] = None
-      quantidade: int
-      entrega: bool = True
-      enderço: str
-      observacoes: Optional[str] = "Sem observacoes"  
+    id: Optional[int] = None
+    quantidade: int
+    local_entrega: Optional[str]
+    tipo_entrega: str
+    observacoes: Optional[str] = "Sem observacoes"  
 
-
-
+    usuario_id: Optional[int] 
+    produto_id: Optional[int]  
+         
+    usuario: Optional[UsuarioSimples]
+    produto: Optional[ProdutoSimples]
 
 
 
