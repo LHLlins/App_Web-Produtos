@@ -36,7 +36,7 @@ class Pedido(Base):
     quantidade = Column(Integer)
     local_entrega = Column(String)
     tipo_entrega = Column(String)
-    observacao =Column(String)
+    observacoes =Column(String)
 
     usuario_id = Column(Integer, ForeignKey('usuario.id',  name= 'fk_pedido_usuario'))
     produto_id = Column(Integer, ForeignKey('produto.id',  name= 'fk_pedido_produto'))
