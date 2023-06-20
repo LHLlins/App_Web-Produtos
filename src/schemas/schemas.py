@@ -27,6 +27,11 @@ class Usuario(BaseModel):
         orm_mode = True
 
 
+class LoginData(BaseModel):
+    senha: str
+    telefone: str
+
+
 class UsuarioSimples(BaseModel):
     id: Optional[str] = None
     nome: str

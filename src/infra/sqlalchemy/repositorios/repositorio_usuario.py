@@ -31,7 +31,7 @@ class RepositorioUsuario():
         self.db.commit()
         
 
-    def obter():
-        pass
-
-     
+    def obter_por_telefone(self, telefone):
+        query = select(models.Usuario).where(models.Usuario.telefone == telefone)
+        return self.db.execute(query).scalars().first()
+      
