@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends,status
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.routers import rotas_produtos
-from routers import rotas_auth
+from src.routers import rotas_auth
 from src.routers import rotas_pedido
 
 app = FastAPI()

@@ -1,10 +1,12 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from typing import List
 from sqlalchemy.orm import Session
-from src.schemas.schemas import  Usuario, UsuarioSimples, LoginData
+from src.schemas.schemas import  Usuario, UsuarioSimples, LoginData, LoginSucesso
 from src.infra.sqlalchemy.config.database import get_db
 from src.infra.sqlalchemy.repositorios.repositorio_usuario import RepositorioUsuario
 from src.infra.providers import hash_providers, token_providers
+from src.routers.auth_utils import obter_usuario_logado
+
 
 router = APIRouter()
 
@@ -21,7 +23,7 @@ def criar_usuarios(usuario:Usuario, db:Session = Depends(get_db)):
     return usuario_criado 
 
 
-@router.post('/token')
+@router.post('/token', response_model=LoginSucesso)
 def login(login_data : LoginData, session: Session=Depends(get_db)):
     senha = login_data.senha
     telefone = login_data.telefone
@@ -41,14 +43,20 @@ def login(login_data : LoginData, session: Session=Depends(get_db)):
     # GERAR TOKEN
     token = token_providers.criar_acess_token({'sub':usuario.telefone})
 
-    return {'usuario':usuario, 'acess_topken': token}
+    return LoginSucesso(usuario = usuario, acess_topken = token)
 
-# @router.get('/usuarios',status_code = status.HTTP_200_OK, response_model = List[Usuario])
-# def listar_usuaio(db:Session = Depends(get_db)):
-#     usuarios = RepositorioUsuario(db).listar()
-#     return usuarios
 
-# @router.delete('/usuarios/{id}', response_model = Usuario)
-# def remover_usuario(id:int, db:Session = Depends(get_db)):
-#     RepositorioUsuario(db).remover(id)
-#     return 
+@router.get('/me', response_model=UsuarioSimples)
+def me(usuario:Usuario = Depends(obter_usuario_logado)):
+    return usuario
+    
+
+@router.get('/usuarios',status_code = status.HTTP_200_OK, response_model = List[Usuario])
+def listar_usuaio(db:Session = Depends(get_db)):
+    usuarios = RepositorioUsuario(db).listar()
+    return usuarios
+
+@router.delete('/usuarios/{id}', response_model = Usuario)
+def remover_usuario(id:int, db:Session = Depends(get_db)):
+    RepositorioUsuario(db).remover(id)
+    return 
