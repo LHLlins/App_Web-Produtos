@@ -27,9 +27,6 @@ class Usuario(BaseModel):
         orm_mode = True
 
 
-class LoginData(BaseModel):
-    senha: str
-    telefone: str
 
 
 class UsuarioSimples(BaseModel):
@@ -40,6 +37,16 @@ class UsuarioSimples(BaseModel):
     
     class Config:
         orm_mode = True
+
+class LoginData(BaseModel):
+    senha: str
+    telefone: str
+
+
+class LoginSucesso(BaseModel):
+    usuario:UsuarioSimples
+    acess_token: str
+    
 
 class ProdutoSimples(BaseModel):
     id: Optional[str] = None
